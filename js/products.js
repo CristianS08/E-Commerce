@@ -1,24 +1,3 @@
-//cargar los productos al local storage
-function addProductsLS(Products){
-    localStorage.setItem("productos", JSON.stringify(Products));
-}
-
-//funcion para traer los productos disponibles cargados en el local storage
-function loadProductsLS(){
-    return JSON.parse(localStorage.getItem("productos")) || [];
-}
-
-//Agrego los productos del carrito al local storage
-function addCartProductsLS(CartProducts){
-    localStorage.setItem("productos_Carrito", JSON.stringify(CartProducts));
-}
-
-//funcion para traer los productos del carrito cargados en el local storage
-function loadCartProductsLS(){
-    return JSON.parse(localStorage.getItem("productos_Carrito")) || [];
-}
-
-
 //Levantar los productos
 function renderProducts(){
     const products = loadProductsLS(); 
@@ -43,23 +22,45 @@ function renderProducts(){
 }
 
 
-
+//Buscar un producto que se encuentra en el Local Storage
 function findProduct(id){
     const products = loadProductsLS();
 
     return products.find(item => item.id === id);
 }
 
+//Agregar un producto al carrito
 function addProductToCart(id){
     const cartProducts = loadCartProductsLS();
-    const product = findProduct(id);
+    let pos = cartProducts.findIndex(item => item.id === id);
 
-    cartProducts.push(product);
+    if (pos > -1){
+        cartProducts[pos].amount += 1;
+    } else{
+        const product = findProduct(id);
+        product.amount = 1;
+        cartProducts.push(product);
+
+    }
+
+
     addCartProductsLS(cartProducts);
-    updateCartButton()
+    updateCartButton();
 }
 
+//Eliminar un producto del carrito
+function deleteProductFromCart(id){
+    const cartProducts = loadCartProductsLS();
+    let pos = cartProducts.findIndex(item => item.id === id);
 
+    cartProducts.splice(pos, 1);
+
+    addCartProductsLS(cartProducts);
+    renderCartProducts();
+    updateCartButton();    
+}
+
+//Actualizamos el incremento del boton del carrito
 function updateCartButton(){
     const cartProducts = loadCartProductsLS();
 
@@ -67,7 +68,7 @@ function updateCartButton(){
 
     let content = 
         `<button type="button" class="btn btn-dark position-relative">
-            Inbox
+            Go to cart
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 ${amount}
             </span>
