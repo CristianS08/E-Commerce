@@ -11,7 +11,6 @@ function logInErrorMesage(){
         error = "";
     }
     
-    
 
     if(password.value == ""){
         error = "<p class = 'text-white bg-danger'> El campo <strong>Password</strong> no puede ir vacio </p>"

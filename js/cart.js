@@ -72,4 +72,19 @@ function emptyCart(){
 }
 
 
-renderCartProducts();
+function emptyCartMessage(){
+
+    let message = `<h2>El carrito esta vacio, no ha seleccionado ningun producto.</h2>`
+
+    document.getElementById("emptyCartMessage").innerHTML = message;
+
+}
+
+
+
+const cartProducts = loadCartProductsLS();
+
+console.log(cartProducts);
+
+cartProducts == []  ? emptyCartMessage() : renderCartProducts();
+
