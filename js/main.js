@@ -57,4 +57,25 @@ function loadCartProductsLS(){
     return JSON.parse(localStorage.getItem("productos_Carrito")) || [];
 }
 
+function categorizeProducts(){
+    const products = loadProductsLS(); 
+    let categories = [];
+    let content = "";
+
+    for (const product of products) {
+        if(!categories.includes(product.category)){
+            content += 
+            `<li><a class="dropdown-item" href="#">${product.category}</a></li>`;
+
+            categories.push(product.category);
+        }
+    }
+    content += 
+        `<li><a class="dropdown-item" href="#">Todas las categorias</a></li>`;
+
+    document.getElementById("categories").innerHTML = content;
+}
+
+categorizeProducts();
+
 addProductsLS(availableProducts);

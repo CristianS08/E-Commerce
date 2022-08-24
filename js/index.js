@@ -19,28 +19,6 @@ const filter = () => {
 } */
 
 
-
-
-function categorizeProducts(){
-    const products = loadProductsLS(); 
-    let categories = [];
-    let content = "";
-
-    for (const product of products) {
-        if(!categories.includes(product.category)){
-            content += 
-            `<li><a class="dropdown-item" href="#">${product.category}</a></li>`;
-
-            categories.push(product.category);
-        }
-    }
-
-    document.getElementById("categories").innerHTML = content;
-}
-
-categorizeProducts();
-
-
 //Agregar productos a la lista de los productos disponibles
 /* function addProduct (Product){
     availableProducts.push(Product);
