@@ -57,6 +57,7 @@ function loadCartProductsLS(){
     return JSON.parse(localStorage.getItem("productos_Carrito")) || [];
 }
 
+//Genera las categorias de los productos en el nav 
 function categorizeProducts(){
     const products = loadProductsLS(); 
     let categories = [];
@@ -76,6 +77,11 @@ function categorizeProducts(){
     document.getElementById("categories").innerHTML = content;
 }
 
-categorizeProducts();
+
+
+
+
+
+
 
 addProductsLS(availableProducts);

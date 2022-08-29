@@ -1,22 +1,10 @@
-
+//categorizeProducts();
 
 /* const soldProducts = []; */
 
 
 
-//buscador dinamico
-/* const searcher = document.querySelector('#searcher');
 
-const filter = () => {
-    const text = searcher.value.toLowerCase();
-
-    for (const product of availableProducts) {
-        let name = product.name.toLowerCase();
-        if (name.indexOf(text) !==-1){
-            //falta poner los resultados abajo del buscador
-        }
-    }
-} */
 
 
 //Agregar productos a la lista de los productos disponibles
@@ -108,5 +96,36 @@ const filter = () => {
     error = "";
 }
 
+
+
+
 let signInButton = document.getElementById("signInButton");
 signInButton.addEventListener("click", registrationErrorMesage); */
+
+
+
+
+
+
+// cuadro de texto del buscador
+const searcher = document.querySelector('#searcher');
+// boton del buscador
+const searcherBtn = document.querySelector('#searcherBtn');
+
+// funcion de prueba
+function mostrar(){
+    console.log("funciona");
+}
+
+// funcion que me guarda el valor del buscador en el localstorage
+/* function saveSearcherValue(){
+
+    const result = searcher.toUpperCase;
+    localStorage.setItem("searcherValue", result);
+} */
+
+searcherBtn.addEventListener('click', mostrar());
+
+//searcher.addEventListener('click', saveSearcherValue());
+
+
