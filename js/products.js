@@ -34,8 +34,8 @@ function renderProducts(){
 
         content += 
         `<div class="col-md-3">
-            <div class="card">
-                <img src="images/${product.image}" class="card-img-top" alt="${product.name}">
+            <div class="card mb-3" >
+                <img src="images/${product.image}" class="card-img-top w-100" style="height: 300px" alt="${product.name}">
                 <div class="card-body text-center">
                     <h5 class="card-title">${product.name}</h5>
                     <p class="card-text">$${product.price}</p>
@@ -57,29 +57,31 @@ function renderProducts(){
 //muestra un modal con los detalles del producto seleccionado
 function showDetails(id){
     const product = findProduct(id);
+    console.log(id);
+    let modal = document.getElementById("productModal");
 
-    const content = `
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">${product.name}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <img src="images/${product.image}" class="card-img-top" alt="${product.name}">
-                    ${product.description}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Add to cart</button>
-                </div>
-            </div>
-        </div>
-    </div>`;
+    document.getElementById("detailTitle").innerHTML = `<h5 class="modal-title">${product.name}</h5>`;
+    
+    let content = `
+    <img src="images/${product.image}" class="card-img-top" alt="${product.name}">
+    <p class="card-text"><strong>$${product.price}</strong></p>
+    <p class="card-text">${product.description}</p>`
+    document.getElementById("detailBody").innerHTML = content;
 
-    document.getElementById("modal").innerHTML = content;
+    modal.style.display = "block";
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+    }
+    
 }
+
 
 //filtra los productos por la categoria seleccionada
 function filterProducts(category){
@@ -92,12 +94,13 @@ function filterProducts(category){
         if(product.category === category){
             content += 
             `<div class="col-md-3">
-                <div class="card">
-                    <img src="images/${product.image}" class="card-img-top" alt="${product.name}">
+                <div class="card mb-3">
+                    <img src="images/${product.image}" class="card-img-top w-100" style="height: 300px" alt="${product.name}">
                     <div class="card-body text-center">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text">$${product.price}</p>
                         <a href="#" class="btn btn-primary" onclick="addProductToCart(${product.id})">Add to cart</a>
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="showDetails(${product.id})">Detail</a>  
                     </div>
                 </div>
             </div>`;
@@ -107,25 +110,6 @@ function filterProducts(category){
 
     document.getElementById("products").innerHTML = content;
 }
-
-/* function showCategories(){
-    const products = loadProductsLS(); 
-    let categories = [];
-    let content = "";
-
-    for (const product of products) {
-        if(!categories.includes(product.category)){
-            content += 
-            `<option onclick="filterProducts(${product.category});">${product.category}</option>`;
-
-            categories.push(product.category);
-        } 
-    }
-    content += 
-        `<option value=""><a onclick="renderProducts();">Todas las categorias</a></option>`;
-
-    document.getElementById("categoriesSelect").innerHTML = content;
-} */
 
 
 //Buscar un producto que se encuentra en el Local Storage
@@ -137,7 +121,8 @@ function findProduct(id){
 
 //Agregar un producto al carrito
 function addProductToCart(id){
-    const cartProducts = loadCartProductsLS();
+    if(validateLogin()){
+        const cartProducts = loadCartProductsLS();
     let pos = cartProducts.findIndex(item => item.id === id);
 
     if (pos > -1){
@@ -152,12 +137,14 @@ function addProductToCart(id){
 
     addCartProductsLS(cartProducts);
     updateCartButton();
+    }
+    
 }
 
 //Actualizamos el incremento del boton del carrito
 function updateCartButton(){
     let content = 
-        `<button type="button" class="btn btn-dark position-relative">
+        `<button type="button" class="btn btn-dark position-relative" onclick="warningEmptyCartMessage()";>
             Go to cart
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
              ${totalProducts()}
@@ -173,41 +160,44 @@ function totalProducts(){
     return cartProducts.reduce((accumulator, item) => accumulator + item.amount , 0);
 }
 
-
-//buscador dinamico
-function dinamicSearcher(){
-    const products = loadProductsLS();
-    const text = localStorage.getItem("searcherValue");
-    let content = "";
-    console.log(text);
-
-    for (const product of products) {
-        let name = product.name.toUpperCase();
-
-        if (name.indexOf(text) !==-1){
-            
-            content += 
-            `<div class="col-md-3">
-                <div class="card">
-                    <img src="images/${product.image}" class="card-img-top" alt="${product.name}">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">${product.name}</h5>
-                        <p class="card-text">$${product.price}</p>
-                        <a href="#" class="btn btn-primary" onclick="addProductToCart(${product.id})">Add to cart</a>
-                    </div>
-                </div>
-            </div>`;
-        }
+//Verifica que el usuario este logueado antes de comprar un producto
+function validateLogin(){
+    let flag = true;
+    const user = loadUserSessionS();
+    if(user.length == 0){
+        flag = false;
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'You have to login to buy a product',
+            footer: '<a href="login.html">Go to Login page?</a>'
+          })
     }
-
-    document.getElementById("products").innerHTML = content;
+    return flag;
 }
 
 
-dinamicSearcher();
+function warningEmptyCartMessage(){
+
+    cartProducts = loadCartProductsLS();
+    if (cartProducts.length == 0){
+        Swal.fire({
+            title: 'Empty cart',
+            text: "The cart is empty, you have to add a product.",
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Ok'
+        })
+    } else{
+        window.location.href = "cart.html";
+    }
+    
+    
+}
+
 
 
 // llamadas a las funciones
+categorizeProducts();
 renderProducts();
 updateCartButton();
-//categorizeProducts();

@@ -1,131 +1,47 @@
-//categorizeProducts();
 
-/* const soldProducts = []; */
-
-
-
-
-
-
-//Agregar productos a la lista de los productos disponibles
-/* function addProduct (Product){
-    availableProducts.push(Product);
-} */
-
-//Agregar productos a la lista de productos vendidos
-/* function sellProduct (Product){
-    let indexSoldProduct = availableProducts.indexOf(Product)
-
-    if(indexSoldProduct != 1) {
-        availableProducts.slice(Product);
-
-        soldProducts.push(Product.sell);
-    }    
-} */
-
-// Buscar productos por el tipo
-/* function findByType (type){
-    let foundProducts = [];
-
-    for (const product of availableProducts) {
-        if (product.type == type){
-            foundProducts.push(product);
-        }
-    }
-
-    return foundProducts;
-} */
-
-// Buscar Productos por un rango de precio
-/* function findByPrice (downPrice, topPrice){
-    let foundProducts = [];
-
-    for (const product of availableProducts) {
-        if(product.price >= downPrice && product.price <= topPrice){
-            foundProducts.push(product);
-        }
-    }
-
-    return foundProducts;
-} */
-
-
-
-
-
-
-
-
-
-
-//registration
-
-/* function registrationErrorMesage(){
-    let email = document.getElementById("email");
-    let password = document.getElementById("password");
-    let name = document.getElementById("name");
-    let last_name = document.getElementById("lastName");
-    let error = "";
-
-    if(email.value == ""){
-        error = "<p class = 'text-white bg-danger'> El campo <strong>Email address</strong> no puede ir vacio </p>"
-        document.getElementById("emailError").innerHTML = error;
-    }
-    
-    error = "";
-
-    if(password.value == ""){
-        error = "<p class = 'text-white bg-danger'> El campo <strong>Password</strong> no puede ir vacio </p>"
-        document.getElementById("passwordError").innerHTML = error;
-    }
-
-    error = "";
-
-    if(name.value == ""){
-        error = "<p class = 'text-white bg-danger'> El campo <strong>Name</strong> no puede ir vacio </p>"
-        document.getElementById("nameError").innerHTML = error;
-    }
-
-    error = "";
-
-    if(last_name.value == ""){
-        error = "<p class = 'text-white bg-danger'> El campo <strong>Last name</strong> no puede ir vacio </p>"
-        document.getElementById("lastNameError").innerHTML = error;
-    }
-
-    error = "";
+//funcion que me guarda el valor del buscador en el localstorage
+function saveSearcherValue(text){
+    console.log(text);
+    localStorage.setItem("searcherValue", text);
 }
 
 
+function renderLastSearches(){
+    const products = loadFoundProductsLS();
+    let content = "";
 
+    for (const product of products) {
+        content += 
+            `<div class="col-md-3">
+                <div class="card mb-3">
+                    <img src="images/${product.image}" class="card-img-top w-100" style="height:300px" alt="${product.name}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text">$${product.price}</p>
+                        <a href="#" class="btn btn-primary" onclick="searchIndexProduct(${product.name})">Search</a>
+                    </div>
+                </div>
+            </div>`;
+    }
 
-let signInButton = document.getElementById("signInButton");
-signInButton.addEventListener("click", registrationErrorMesage); */
-
-
-
-
-
-
-// cuadro de texto del buscador
-const searcher = document.querySelector('#searcher');
-// boton del buscador
-const searcherBtn = document.querySelector('#searcherBtn');
-
-// funcion de prueba
-function mostrar(){
-    console.log("funciona");
+    document.getElementById("products").innerHTML = content;
 }
 
-// funcion que me guarda el valor del buscador en el localstorage
-/* function saveSearcherValue(){
-
-    const result = searcher.toUpperCase;
-    localStorage.setItem("searcherValue", result);
+/* //Funcion que me redirige a foundProducts.html con el producto seleccionado
+function searchIndexProduct(name){
+    console.log(name);
+    localStorage.setItem("searcherValue", name);
 } */
 
-searcherBtn.addEventListener('click', mostrar());
+// valor de cuadro de texto del buscador
+searcherText = document.getElementById("searcher");
+// boton del buscador y llamada a la funcion
+document.getElementById("searcherBtn").onchange  = saveSearcherValue(searcherText.value);
 
-//searcher.addEventListener('click', saveSearcherValue());
+
+categorizeProducts();
+//changeLogInButton();
+renderLastSearches();
+
 
 

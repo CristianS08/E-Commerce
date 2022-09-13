@@ -1,7 +1,62 @@
-.logInForm{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+.form-login{
+    width: 400px;
+    background: #f8f9fa;
+    padding: 30px;
+    margin: auto;
+    margin-top: 100px;
+    border-radius: 4px;
+    font-family: 'calibri';
+    color: white;
+    box-shadow: 7px 13px 37px #000;
+}
+
+.form-login h4{
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.control{
+    width: 100%;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid #1f53c5;
+    font-family: 'calibri';
+    font-size: 18px;
+    color: black;
+}
+
+.boton{
+    width: 100%;
+    background: #1f53c5;
+    border: none;
+    padding: 12px;
+    color: white;
+    margin: 16px 0;
+    font-size: 16px;
+}
+
+.form-login a:hover{
+    color: black;
+    text-decoration: underline;
+}
+
+.form-login p {
+    text-align: center;
+    color: black;
+}
+
+body{
+    background: #f8f9fa;
 }
 
 .errorMesage{

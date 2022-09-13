@@ -1,72 +1,77 @@
 
-function registrationErrorMesage(){
-    let email = document.getElementById("email");
-    let password = document.getElementById("password");
-    let name = document.getElementById("name");
-    let lastName = document.getElementById("lastName");
-    let error = "";
+function createUser(){
+    const userEmail = document.getElementById("email");
+    const userPass = document.getElementById("password");
+    const userName = document.getElementById("name");
+    const userLastName = document.getElementById("lastName");
 
-    if(email.value == ""){
-        error = "El campo Email address no puede ir vacio"
-        errorMessage(error);
- //       document.getElementById("emailError").innerHTML = error;
-    } else{
-        error = "";
-    }
+    let user = {name: userName.value, lastName: userLastName.value, email: userEmail.value, password: userPass.value};
     
+    let users = loadUsersLS();
+    users.push(user);
+    addUsersLS(users);
 
-    if(password.value == ""){
-        error = "El campo Password no puede ir vacio"
-        errorMessage(error);
-//        document.getElementById("passwordError").innerHTML = error;
-    }
-    else{
-        error = "";
-    }
-
-    if(name.value == ""){
-        error = "El campo Name no puede ir vacio"
-        errorMessage(error);
- //       document.getElementById("nameError").innerHTML = error;
-    }
-    else{
-        error = "";
-    }
-
-    if(lastName.value == ""){
-        error = "El campo Last Name no puede ir vacio"
-        errorMessage(error);
-  //      document.getElementById("lastNameError").innerHTML = error;
-    }
-    else{
-        error = "";
-    }
-    
-}
-
-/* "<p class = 'text-white bg-danger'> El campo <strong>Password</strong> no puede ir vacio </p>" */
-
-/* function successfullRegistration(){
     Swal.fire({
-        position: 'top-end',
+        position: 'center',
         icon: 'success',
-        title: 'Your work has been saved',
-        showConfirmButton: false,
-        timer: 1500
-      })
-} */
-
-function errorMessage(error){
-    Toastify({
-        text: error,
-        duration: 5000,
-        stopOnFocus: true,
-        position: "center",
-        style: {
-          background: "linear-gradient(#00b09b, #96c93d)",
+        title: '¡You are a new User!',
+        showConfirmButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "login.html";
         }
-      }).showToast();
+      })
+
 }
 
-let button = document.getElementById("signInButton")
+
+
+
+function registrationErrorMesage(){
+    let flag = true;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    let name = document.getElementById("name").value;
+    let lastName = document.getElementById("lastName").value;
+
+
+    let emailError = document.getElementById("emailError");
+    emailError.innerHTML = "";
+    if(email.trim() == ""){
+        flag = false;
+        emailError.innerHTML = "<p class = 'text-white bg-danger'>Warning, The <strong>email</strong> field can't be empty</p>";
+    }
+   
+
+    let passError = document.getElementById("passwordError");
+    passError.innerHTML = "";
+    if(password.trim() == ""){
+        flag = false;
+        passError.innerHTML = "<p class = 'text-white bg-danger'>Warning, The <strong>password</strong> field can't be empty</p>";
+    }
+    
+
+    let nameError = document.getElementById("nameError");
+    nameError.innerHTML = "";
+    if(name.trim() == ""){
+        flag = false;
+        nameError.innerHTML = "<p class = 'text-white bg-danger'>Warning, The <strong>name</strong> field can't be empty</p>";
+    }
+    
+
+    let lastNameError = document.getElementById("lastNameError");
+    lastNameError.innerHTML = "";
+    if(lastName.trim() == ""){
+        flag = false;
+        lastNameError.innerHTML = "<p class = 'text-white bg-danger'>Warning, The <strong>lastName</strong> field can't be empty</p>";
+    }
+
+    if (flag){
+        createUser();
+    }
+    
+}
+
+
+let button = document.getElementById("signInButton");
 button.addEventListener("click", registrationErrorMesage);
